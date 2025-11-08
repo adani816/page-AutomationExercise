@@ -1,0 +1,35 @@
+# =========================
+# ARCHIVOS DE DEPENDENCIAS
+# =========================
+
+# Node.js (Playwright, npm, etc.)
+tests-frontend/Page-AutomationExercise-POM-Playwright/node_modules/
+tests-frontend/Page-AutomationExercise-POM-Playwright/package-lock.json
+tests-frontend/Page-AutomationExercise-POM-Playwright/yarn.lock
+tests-frontend/Page-AutomationExercise-POM-Playwright/pnpm-lock.yaml
+
+# Maven / Gradle (Karate)
+tests-backend/Page-AutomationExercise-karate/target/
+tests-backend/Page-AutomationExercise-karate/build/
+tests-backend/Page-AutomationExercise-karate/out/
+tests-backend/Page-AutomationExercise-karate/.gradle/
+
+# =========================
+# ARCHIVOS TEMPORALES
+# =========================
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# =========================
+# REPORTES DE PRUEBAS
+# =========================
+# Playwright
+tests-frontend/Page-AutomationExercise-POM-Playwright/test-results/
+tests-frontend/Page-AutomationExercise-POM-Playwright/playwright-report/
+tests-frontend/Page-AutomationExercise-POM-Playwright/.cache/
+tests-frontend/Page-AutomationExercise-POM-Playwright/.playwright/
+
+#
