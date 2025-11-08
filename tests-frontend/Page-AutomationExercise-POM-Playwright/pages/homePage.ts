@@ -1,7 +1,5 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./basePage";
-import { Locators } from "./locators";
-
 
 export class HomePage extends BasePage {
 
@@ -13,10 +11,10 @@ export class HomePage extends BasePage {
     constructor(page:Page) {
         super(page);
     
-        this.titleHomeSlider = page.locator(Locators.home.titleHomeSlider);
-        this.menuOptionSignupLogin = page.locator(Locators.home.menuOptionSignupLogin);
-        this.menuOptionDeletedAccount = page.locator(Locators.home.menuOptionDeleteAccount);
-        this.menuOptionUserName = page.locator(Locators.home.menuOptionUserName);
+        this.titleHomeSlider = page.locator('#slider-carousel');
+        this.menuOptionSignupLogin = page.locator('//*[@id="header"]/div/div/div/div[2]/div/ul/li[4]/a');
+        this.menuOptionDeletedAccount = page.locator(`getByRole('link', { name:' Delete Account' })`);
+        this.menuOptionUserName = page.locator('//div[2]/div/ul/li[10]/a/b');
     }
 
     async homePageVisible() {

@@ -1,4 +1,9 @@
 {
+  "registeredUser": {
+    "email": "practiceuser001@yopmail.com",
+    "password": "123456Aa",
+    "invalidPassword": "wrongPwd123"
+  },
   "name": "John",
   "lastName": "Pérez",
   "company": "Pragma",

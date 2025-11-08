@@ -8,8 +8,8 @@ export class BasePage {
         this.page = page
     }
 
-    async navigateTo(url:string) {
-        await this.page.goto(url);
+    async navigateTo() {
+        await this.page.goto('/');
     }
 
 //----------------ACTION---------------------
@@ -18,35 +18,44 @@ export class BasePage {
     }
 
     protected async clickOn(selector:Locator) {
+        await selector.isVisible();
         await selector.click();
     }
 
     protected async typeField(selector:Locator, text:string) {
+        await selector.isVisible();
         await selector.fill(text);
     }
 
     protected async selectOption(selector:Locator, option:string) {
+        await selector.isVisible();
         await selector.selectOption(option);
     }
 
     protected async getText(selector:Locator) {
+        await selector.isVisible();
         return await selector.textContent();
     }
 
     protected async pressSequentially(selector:Locator, text:string) {
+        await selector.isVisible();
         await selector.pressSequentially(text);
     }
 
     protected async focus(selector:Locator) {
+        await selector.isVisible();
         await selector.focus();
     }
 
 //----------------ASSERTIONS---------------------
-    protected async expectVisible(selector:Locator){
-        await expect(selector).toBeVisible();
+    protected async expectVisible(selector:Locator, options?: { timeout?: number; message?: string }){
+        const timeout = options?.timeout ?? 5000;
+        await selector.waitFor({ state: 'visible', timeout });
+        await expect(selector).toBeVisible(  { timeout });
     }
 
     protected async matchesText(selector:Locator, text:string) {
+        await selector.isVisible();
         await expect(selector).toHaveText(text);
     }
 

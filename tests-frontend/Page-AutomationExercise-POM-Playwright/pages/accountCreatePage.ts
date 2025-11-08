@@ -1,7 +1,5 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./basePage";
-import { Locators } from "./locators";
-
 
 export class AccountCreatePage extends BasePage {
 
@@ -10,8 +8,8 @@ export class AccountCreatePage extends BasePage {
 
     constructor(page:Page) {
         super(page);
-        this.titleAccountCreated = page.locator(Locators.account_created.title_account_created);
-        this.buttonContinueCreated = page.locator(Locators.account_created.button_continue_created);
+        this.titleAccountCreated = page.locator('//div/h2/b[text()="Account Created!"]');
+        this.buttonContinueCreated = page.locator('a[data-qa="continue-button"]');
     }
 
     async titleVisible(){

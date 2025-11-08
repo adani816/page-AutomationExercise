@@ -1,7 +1,5 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./basePage";
-import { Locators } from "./locators";
-
 
 export class AccountDeletedPage extends BasePage {
 
@@ -10,8 +8,8 @@ export class AccountDeletedPage extends BasePage {
 
     constructor(page:Page) {
         super(page);
-        this.titleAccountDeleted = page.locator(Locators.account_deleted.title_account_deleted);
-        this.buttonContinueDeleted = page.locator(Locators.account_deleted.button_continue_deleted);
+        this.titleAccountDeleted = page.locator('//div/h2/b[text()="Account Deleted!"]');
+        this.buttonContinueDeleted = page.locator('a[data-qa="continue-button"]');
     }
 
     async titleVisible(){

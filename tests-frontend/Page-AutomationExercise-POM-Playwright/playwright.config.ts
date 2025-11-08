@@ -1,16 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   testDir: './prueba',
   /* Run tests in files in parallel */
@@ -27,23 +16,22 @@ export default defineConfig({
     ['junit', { outputFile: 'test-results/e2e-result-junit.xml' }],
     //['allure-playwright', { outputFolder: '' } ]
   ],
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    baseURL: 'http://automationexercise.com',
+    //baseURL: '#{autExcUrl}',
     trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
+  timeout: 90000,
+  //retries: 2,
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
 
-    {
+/*     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
@@ -51,7 +39,7 @@ export default defineConfig({
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
+    }, */
 
     /* Test against mobile viewports. */
     // {

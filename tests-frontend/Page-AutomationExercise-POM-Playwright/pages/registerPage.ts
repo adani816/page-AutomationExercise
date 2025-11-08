@@ -1,7 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./basePage";
-import { Locators } from "./locators";
-
+import userData from '../utils/data/account.data.json';
 
 export class RegisterPage extends BasePage {
 
@@ -21,24 +20,23 @@ export class RegisterPage extends BasePage {
     private readonly mobileNumber: Locator;
     private readonly buttonCreateAccount: Locator;
 
-
     constructor(page:Page) {
         super(page);
-        this.titleEnterAccountInformation = page.locator(Locators.account_information.title_enter_account_information);
-        this.titleMr = page.locator(Locators.account_information.title_mr);
-        this.password = page.locator(Locators.account_information.password);
-        this.days = page.locator(Locators.account_information.days);
-        this.months = page.locator(Locators.account_information.months);
-        this.years = page.locator(Locators.account_information.years);
-        this.firstName = page.locator(Locators.account_information.first_name);
-        this.lastName = page.locator(Locators.account_information.last_name);
-        this.address1 = page.locator(Locators.account_information.address1);
-        this.country = page.locator(Locators.account_information.country);
-        this.state = page.locator(Locators.account_information.state);
-        this.city = page.locator(Locators.account_information.city);
-        this.zipcode = page.locator(Locators.account_information.zipcode);
-        this.mobileNumber = page.locator(Locators.account_information.mobile_number);
-        this.buttonCreateAccount = page.locator(Locators.account_information.button_create_account);
+        this.titleEnterAccountInformation = page.locator('//div/h2/b[text()="Enter Account Information"]');
+        this.titleMr = page.locator('//*[@id="id_gender1"]');
+        this.password = page.locator('[data-qa="password"]');
+        this.days = page.locator('[data-qa="days"]');
+        this.months = page.locator('[data-qa="months"]');
+        this.years = page.locator('[data-qa="years"]');
+        this.firstName = page.locator('[data-qa="first_name"]');
+        this.lastName = page.locator('[data-qa="last_name"]');
+        this.address1 = page.locator('[data-qa="address"]');
+        this.country = page.locator('[data-qa="country"]');
+        this.state = page.locator('[data-qa="state"]');
+        this.city = page.locator('[data-qa="city"]');
+        this.zipcode = page.locator('[data-qa="zipcode"]');
+        this.mobileNumber = page.locator('[data-qa="mobile_number"]');
+        this.buttonCreateAccount = page.locator('[data-qa="create-account"]');
     }
 
     async titleVisible(){
@@ -46,7 +44,6 @@ export class RegisterPage extends BasePage {
     }
 
     async enterUserData() {
-        const userData = require('../utils/data/account.data.json')
         await this.clickOn(this.titleMr);
         await this.typeField(this.password, userData.password);
         await this.selectOption(this.days, userData.birthday.day);
