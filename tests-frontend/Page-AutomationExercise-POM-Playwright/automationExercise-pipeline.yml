@@ -1,0 +1,34 @@
+trigger:
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '22.14.0'
+  displayName: 'Instalar Node.js'
+
+- script: npm install
+  displayName: 'Instalar dependencias de Playwright'
+
+- script: npx playwright install --with-deps
+  displayName: 'Instalar navegadores de Playwright'
+
+- script: npx playwright test automationExercise.spec.ts
+  displayName: 'Ejecutar prueba'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: 'playwright-report'
+    artifact: 'playwright-report'
+    publishLocation: 'pipeline'
+  condition: succeededOrFailed()
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/e2e-*.xml'
+  condition: succeededOrFailed()
