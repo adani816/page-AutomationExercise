@@ -1,36 +1,43 @@
-import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./basePage";
+import { Page, expect } from 'playwright/test';
 
-export class HomePage extends BasePage {
-
-    private readonly titleHomeSlider: Locator;
-    private readonly menuOptionSignupLogin: Locator;
-    private readonly menuOptionDeletedAccount: Locator;
-    private readonly menuOptionUserName: Locator;
+export class HomePage {
+    private readonly page: Page;
 
     constructor(page:Page) {
-        super(page);
-    
-        this.titleHomeSlider = page.locator('#slider-carousel');
-        this.menuOptionSignupLogin = page.locator('//*[@id="header"]/div/div/div/div[2]/div/ul/li[4]/a');
-        this.menuOptionDeletedAccount = page.locator(`getByRole('link', { name:' Delete Account' })`);
-        this.menuOptionUserName = page.locator('//div[2]/div/ul/li[10]/a/b');
+        this.page = page;
+    }
+
+    async navigateTo() {
+        await this.page.goto('/');
+    }
+
+    async validateUrl(pathname: string) {
+        const url = new URL(this.page.url());
+        expect(url.pathname).toBe(`/${pathname}`);
     }
 
     async homePageVisible() {
-        await this.expectVisible(this.titleHomeSlider);
+        const titleHomeSlider = this.page.locator('#slider-carousel');
+        await expect(titleHomeSlider).toBeVisible();
     }
 
     async optionMenuSignUpLogin()  {
-        await this.clickOn(this.menuOptionSignupLogin);      
+        const menuOptionSignupLogin = this.page.locator('//*[@id="header"]/div/div/div/div[2]/div/ul/li[4]/a');
+        await menuOptionSignupLogin.click();    
     }
 
     async optionMenuDeleteAccount(){
-        //PENDIENTE AJUSTAR ESTE LOCALIZADOR 
-        await this.page.getByRole('link', { name: ' Delete Account' }).click();
+        const menuOptionDeletedAccount = this.page.getByRole('link', { name:' Delete Account' });
+        menuOptionDeletedAccount.click();
+    }
+
+    async optionMenuLogout(){
+        const menuOptionLogout = this.page.getByRole('link', { name:' Logout' });
+        menuOptionLogout.click();
     }
 
     async userNameVisible() {
-        await this.expectVisible(this.menuOptionUserName);
+        const menuOptionUserName = this.page.locator('//div[2]/div/ul/li[10]/a/b');
+        await expect(menuOptionUserName).toBeVisible();
     }
 }

@@ -1,66 +1,52 @@
-import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./basePage";
+import { Page, expect } from 'playwright/test';
+
 import userData from '../utils/data/account.data.json';
 
-export class RegisterPage extends BasePage {
-
-    private readonly titleEnterAccountInformation: Locator;
-    private readonly titleMr: Locator;
-    private readonly password: Locator;
-    private readonly days: Locator;
-    private readonly months: Locator;
-    private readonly years: Locator;
-    private readonly firstName: Locator;
-    private readonly lastName: Locator;
-    private readonly address1: Locator;
-    private readonly country: Locator;
-    private readonly state: Locator;
-    private readonly city: Locator;
-    private readonly zipcode: Locator;
-    private readonly mobileNumber: Locator;
-    private readonly buttonCreateAccount: Locator;
+export class RegisterPage {
+     private readonly page: Page;
 
     constructor(page:Page) {
-        super(page);
-        this.titleEnterAccountInformation = page.locator('//div/h2/b[text()="Enter Account Information"]');
-        this.titleMr = page.locator('//*[@id="id_gender1"]');
-        this.password = page.locator('[data-qa="password"]');
-        this.days = page.locator('[data-qa="days"]');
-        this.months = page.locator('[data-qa="months"]');
-        this.years = page.locator('[data-qa="years"]');
-        this.firstName = page.locator('[data-qa="first_name"]');
-        this.lastName = page.locator('[data-qa="last_name"]');
-        this.address1 = page.locator('[data-qa="address"]');
-        this.country = page.locator('[data-qa="country"]');
-        this.state = page.locator('[data-qa="state"]');
-        this.city = page.locator('[data-qa="city"]');
-        this.zipcode = page.locator('[data-qa="zipcode"]');
-        this.mobileNumber = page.locator('[data-qa="mobile_number"]');
-        this.buttonCreateAccount = page.locator('[data-qa="create-account"]');
+        this.page = page; 
     }
 
     async titleVisible(){
-        await this.expectVisible(this.titleEnterAccountInformation);
+        const titleEnterAccountInformation = this.page.locator('//div/h2/b[text()="Enter Account Information"]');
+        await expect(titleEnterAccountInformation).toBeVisible();
     }
 
     async enterUserData() {
-        await this.clickOn(this.titleMr);
-        await this.typeField(this.password, userData.password);
-        await this.selectOption(this.days, userData.birthday.day);
-        await this.selectOption(this.months, userData.birthday.month);
-        await this.selectOption(this.years, userData.birthday.year);
-        await this.typeField(this.firstName, userData.name);
-        await this.typeField(this.lastName, userData.lastName);
-        await this.typeField(this.address1, userData.addressOne);
-        await this.selectOption(this.country, userData.country);
-        await this.typeField(this.state, userData.state);
-        await this.typeField(this.city, userData.city);
-        await this.typeField(this.zipcode, userData.zipCode);
-        await this.typeField(this.mobileNumber, userData.mobileNumber);
+        const titleMr = this.page.locator('//*[@id="id_gender1"]');
+        const password = this.page.locator('[data-qa="password"]');
+        const days = this.page.locator('[data-qa="days"]');
+        const months = this.page.locator('[data-qa="months"]');
+        const years = this.page.locator('[data-qa="years"]');
+        const firstName = this.page.locator('[data-qa="first_name"]');
+        const lastName = this.page.locator('[data-qa="last_name"]');
+        const address1 = this.page.locator('[data-qa="address"]');
+        const country = this.page.locator('[data-qa="country"]');
+        const state = this.page.locator('[data-qa="state"]');
+        const city = this.page.locator('[data-qa="city"]');
+        const zipcode = this.page.locator('[data-qa="zipcode"]');
+        const mobileNumber = this.page.locator('[data-qa="mobile_number"]');
+        
+        await titleMr.click();
+        await password.fill(userData.password);
+        await days.selectOption(userData.birthday.day);
+        await months.selectOption(userData.birthday.month);
+        await years.selectOption(userData.birthday.year);
+        await firstName.fill(userData.name);
+        await lastName.fill(userData.lastName);
+        await address1.fill(userData.addressOne);
+        await country.selectOption(userData.country);
+        await state.fill(userData.state);
+        await city.fill(userData.city);
+        await zipcode.fill(userData.zipCode);
+        await mobileNumber.fill(userData.mobileNumber);
     }
 
     async clickButtonCreate() {
-        await this.clickOn(this.buttonCreateAccount);
+        const buttonCreateAccount = this.page.locator('[data-qa="create-account"]');
+        await buttonCreateAccount.click();
     }
 
 }

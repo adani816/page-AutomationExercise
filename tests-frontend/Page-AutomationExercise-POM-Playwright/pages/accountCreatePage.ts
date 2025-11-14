@@ -1,23 +1,21 @@
-import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./basePage";
+import { Page, expect } from 'playwright/test';
 
-export class AccountCreatePage extends BasePage {
+export class AccountCreatePage {
 
-    private readonly titleAccountCreated: Locator;
-    private readonly buttonContinueCreated: Locator;
+    private readonly page: Page;
 
     constructor(page:Page) {
-        super(page);
-        this.titleAccountCreated = page.locator('//div/h2/b[text()="Account Created!"]');
-        this.buttonContinueCreated = page.locator('a[data-qa="continue-button"]');
+        this.page = page;
     }
 
     async titleVisible(){
-        await this.expectVisible(this.titleAccountCreated);
+        const titleAccountCreated = this.page.locator('//div/h2/b[text()="Account Created!"]');
+        await expect(titleAccountCreated).toBeVisible();
     }
 
     async clicButtonContinue() {
-        await this.clickOn(this.buttonContinueCreated)
+        const buttonContinueCreated = this.page.locator('a[data-qa="continue-button"]');
+        await buttonContinueCreated.click();
     }
 
 }

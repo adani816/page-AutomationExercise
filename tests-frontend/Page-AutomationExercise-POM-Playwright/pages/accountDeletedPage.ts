@@ -1,24 +1,21 @@
-import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./basePage";
+import { Page, expect } from 'playwright/test';
 
-export class AccountDeletedPage extends BasePage {
+export class AccountDeletedPage {
 
-    private readonly titleAccountDeleted: Locator;
-    private readonly buttonContinueDeleted: Locator;
+    private readonly page: Page;
 
     constructor(page:Page) {
-        super(page);
-        this.titleAccountDeleted = page.locator('//div/h2/b[text()="Account Deleted!"]');
-        this.buttonContinueDeleted = page.locator('a[data-qa="continue-button"]');
+        this.page = page;
     }
 
     async titleVisible(){
-        await this.expectVisible(this.titleAccountDeleted);
+        const titleAccountDeleted = this.page.locator('//div/h2/b[text()="Account Deleted!"]');
+        await expect(titleAccountDeleted).toBeVisible();
     }
 
     async clicButtonContinue() {
-        await this.clickOn(this.buttonContinueDeleted)
+        const buttonContinueDeleted = this.page.locator('a[data-qa="continue-button"]');
+        await buttonContinueDeleted.click();
     }
-
 
 }

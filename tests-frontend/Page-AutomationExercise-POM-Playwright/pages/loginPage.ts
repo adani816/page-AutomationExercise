@@ -1,61 +1,50 @@
-import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./basePage";
-import { TestDataGenerator } from "../utils/generateEmail";
+import { Page, expect } from 'playwright/test';
 
-export class LoginPage extends BasePage {
+export class LoginPage {
 
-    private readonly titleNewUser: Locator;
-    private readonly titleRegUser: Locator;
-    private readonly newName: Locator;
-    private readonly newEmail: Locator;
-    private readonly buttonSignup: Locator;
-    private readonly loginEmail: Locator;
-    private readonly loginPassword: Locator;
-    private readonly buttonLogin: Locator;
-    private readonly alertIncorrectLogin: Locator
+    private readonly page: Page;
 
     constructor(page:Page) {
-        super(page);
-        this.titleNewUser = page.locator('//div[3]/div/h2[text()="New User Signup!"]');
-        this.titleRegUser = page.locator('//*[@id="form"]/div/div/div[1]/div/h2');
-        this.newName = page.locator('[data-qa="signup-name"]');
-        this.newEmail = page.locator('[data-qa="signup-email"]');
-        this.buttonSignup = page.locator('[data-qa="signup-button"]');
-        this.loginEmail = page.locator('[data-qa="login-email"]');
-        this.loginPassword = page.locator('[data-qa="login-password"]');
-        this.buttonLogin = page.locator('[data-qa="login-button"]');
-        this.alertIncorrectLogin = page.locator('//*[@id="form"]/div/div/div[1]/div/form/p');
+        this.page = page;
     }
 
     async titleVisibleNewUser() {
-        await this.expectVisible(this.titleNewUser);
+        const titleNewUser = this.page.locator('//div[3]/div/h2[text()="New User Signup!"]');
+        await expect(titleNewUser).toBeVisible();
     }
 
     async titleVisibleRegUser() {
-        await this.expectVisible(this.titleRegUser);
+        const titleRegUser = this.page.locator('//*[@id="form"]/div/div/div[1]/div/h2');
+        await expect(titleRegUser).toBeVisible();
     }
 
-    async newUserSingup() {
-        const userData = require('../utils/data/account.data.json')
-        await this.typeField(this.newName, userData.name);
-        await this.typeField(this.newEmail, TestDataGenerator.uniqueEmail());
+    async newUserSingup(name:string, email:string) {
+        const newName = this.page.locator('[data-qa="signup-name"]');
+        const newEmail = this.page.locator('[data-qa="signup-email"]');
+        await newName.fill(name);
+        await newEmail.fill(email);
     }
 
     async loginToYourAccount(email:string, password:string) {
-        await this.typeField(this.loginEmail, email);
-        await this.typeField(this.loginPassword, password);
+        const loginEmail = this.page.locator('[data-qa="login-email"]');
+        const loginPassword = this.page.locator('[data-qa="login-password"]');
+        await loginEmail.fill(email);
+        await loginPassword.fill(password);
     }
 
     async clickButtonSingup() {
-        await this.clickOn(this.buttonSignup);
+        const buttonSignup = this.page.locator('[data-qa="signup-button"]');
+        await buttonSignup.click();
     }
 
     async clickButtonLogin() {
-        await this.clickOn(this.buttonLogin);
+        const buttonLogin = this.page.locator('[data-qa="login-button"]');
+        await buttonLogin.click();
     }
 
     async alertIncorrectLoginVisible() {
-        await this.expectVisible(this.alertIncorrectLogin);
+        const alertIncorrectLogin = this.page.locator('//*[@id="form"]/div/div/div[1]/div/form/p');
+        await expect(alertIncorrectLogin).toBeVisible();
     }
 
     
