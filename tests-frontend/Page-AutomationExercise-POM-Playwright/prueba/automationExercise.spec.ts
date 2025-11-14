@@ -1,11 +1,11 @@
 import { test } from '@playwright/test';
-import { BasePage } from '../pages/basePage';
 import { HomePage } from '../pages/homePage';
 import { LoginPage } from '../pages/loginPage';
 import { RegisterPage } from '../pages/registerPage';
 import { AccountCreatePage } from '../pages/accountCreatePage';
 import { AccountDeletedPage } from '../pages/accountDeletedPage';
 import userData from '../utils/data/account.data.json';
+import { TestDataGenerator } from '../utils/generateEmail';
 
 test.describe('Practica-Playwright-POM', () => {
         let homePage: HomePage;
@@ -13,7 +13,6 @@ test.describe('Practica-Playwright-POM', () => {
         let registerPage: RegisterPage;
         let accountCreatePage: AccountCreatePage;
         let accountDeleted: AccountDeletedPage;
-        let base: BasePage;
 
     test.beforeEach(async ({ page }) => {
         homePage = new HomePage(page);
@@ -21,76 +20,99 @@ test.describe('Practica-Playwright-POM', () => {
         registerPage = new RegisterPage(page);
         accountCreatePage = new AccountCreatePage(page);
         accountDeleted = new AccountDeletedPage(page);
-        base = new BasePage(page);
 
-        await base.navigateTo();
-    });
-
-    test('Test Case 1: Register User', async ({ page }) => {
-        console.log('1. Launch browser');
-        console.log(`2. Navigate to url ${page.url()}`);
-        console.log('3. Verify that home page is visible successfully');
+        await homePage.navigateTo();
         await homePage.homePageVisible();
-        console.log(`4. Click on 'Signup / Login' button`);
-        await homePage.optionMenuSignUpLogin();
-        console.log(`5. Verify 'New User Signup!' is visible`);
-        await loginPage.titleVisibleNewUser();
-        console.log('6. Enter name and email address');
-        await loginPage.newUserSingup();
-        console.log('7. Click Signup button');
-        await loginPage.clickButtonSingup();
-        console.log('8. Verify that ENTER ACCOUNT INFORMATION is visible');
-        await registerPage.titleVisible();
-        console.log('9. Fill details: Title, Name, Email, Password, ...');
-        await registerPage.enterUserData();
-        console.log('10. Click Create Account button');
-        await registerPage.clickButtonCreate();
-        console.log('11. Verify that ACCOUNT CREATED! is visible');
-        await accountCreatePage.titleVisible();
-        console.log('12. Click Continue button');
-        await accountCreatePage.clicButtonContinue();
-        console.log('13. Verify that Logged in as username is visible');
-        await homePage.userNameVisible();
-        console.log('14. Click Delete Account button');
-        await homePage.optionMenuDeleteAccount();
-        console.log('15. Click Continue button');
-        await accountDeleted.titleVisible();
-        console.log('16. Verify that ACCOUNT DELETED! is visible');
-        await accountDeleted.clicButtonContinue();
     });
 
-    test('Test Case 2: Login User with correct email and password', async ({ page }) => {
-        console.log('1. Launch browser');
-        console.log(`2. Navigate to url ${page.url()}`);
-        console.log('3. Verify that home page is visible successfully');
-        await homePage.homePageVisible();
-        console.log(`4. Click on 'Signup / Login' button`);
-        await homePage.optionMenuSignUpLogin();
-        console.log(`5. Verify 'Login to your account' is visible`);
-        await loginPage.titleVisibleRegUser();
-        console.log('6. Enter name and email address');
-        await loginPage.loginToYourAccount(userData.registeredUser.email, userData.registeredUser.password);
-        console.log('7. Click login button');
-        await loginPage.clickButtonLogin();
-        console.log('8. Verify that Logged in as username is visible');
-        await homePage.userNameVisible();
+    test(`Test Case 1: Register User
+        1. Launch browser
+        2. Navigate to url 'http://automationexercise.com'
+        3. Verify that home page is visible successfully
+        4. Click on 'Signup / Login' button
+        5. Verify 'New User Signup!' is visible
+        6. Enter name and email address
+        7. Click 'Signup' button
+        8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
+        9. Fill details: Title, Name, Email, Password, Date of birth
+        10. Click Create Account button
+        11. Verify that 'ACCOUNT CREATED!' is visible
+        12. Click 'Continue' button
+        13. Verify that 'Logged in as username' is visible 
+        14. Click 'Delete Account' button
+        15. Click Continue button
+        16. Verify that ACCOUNT DELETED! is visible`, async ({}) => {
+            await homePage.optionMenuSignUpLogin();
+            await loginPage.titleVisibleNewUser();
+            await loginPage.newUserSingup(
+                userData.name, TestDataGenerator.uniqueEmail()
+            );
+            await loginPage.clickButtonSingup();
+            await registerPage.titleVisible();
+            await registerPage.enterUserData();
+            await registerPage.clickButtonCreate();
+            await accountCreatePage.titleVisible();
+            await accountCreatePage.clicButtonContinue();
+            await homePage.userNameVisible();
+            await homePage.optionMenuDeleteAccount();
+            await accountDeleted.titleVisible();
+            await accountDeleted.clicButtonContinue();
     });
 
-    test('Test Case 3: Login User with incorrect email and password', async ({ page }) => {
-        console.log('1. Launch browser');
-        console.log(`2. Navigate to url ${page.url()}`);
-        console.log('3. Verify that home page is visible successfully');
-        await homePage.homePageVisible();
-        console.log(`4. Click on 'Signup / Login' button`);
-        await homePage.optionMenuSignUpLogin();
-        console.log(`5. Verify 'Login to your account' is visible`);
-        await loginPage.titleVisibleRegUser();
-        console.log('6. Enter name and email address');
-        await loginPage.loginToYourAccount(userData.registeredUser.email, userData.registeredUser.invalidPassword);
-        console.log('7. Click login button');
-        await loginPage.clickButtonLogin();
-        console.log('8. Verify error Your email or password is incorrect! is visible');
-        await loginPage.alertIncorrectLoginVisible();
+    test(`Test Case 2: Login User with correct email and password
+        1. Launch browser
+        2. Navigate to url 'http://automationexercise.com'
+        3. Verify that home page is visible successfully
+        4. Click on 'Signup / Login' button
+        5. Verify 'Login to your account' is visible
+        6. Enter name and email address
+        7. Click 'login' button
+        8. Verify that 'Logged in as username' is visible`, async ({}) => {
+            await homePage.optionMenuSignUpLogin();
+            await loginPage.titleVisibleRegUser();
+            await loginPage.loginToYourAccount(
+                userData.registeredUser.email, userData.registeredUser.password
+            );
+            await loginPage.clickButtonLogin();
+            await homePage.userNameVisible();
     });
+
+    test(`Test Case 3: Login User with incorrect email and password
+        1. Launch browser
+        2. Navigate to url
+        3. Verify that home page is visible successfully
+        4. Click on 'Signup / Login' button
+        5. Verify 'Login to your account' is visible
+        6. Enter name and email address
+        7. Click login button
+        8. Verify error Your email or password is incorrect! is visible`, async ({}) => {
+            await homePage.optionMenuSignUpLogin();
+            await loginPage.titleVisibleRegUser();
+            await loginPage.loginToYourAccount(userData.registeredUser.email, userData.registeredUser.invalidPassword);
+            await loginPage.clickButtonLogin();
+            await loginPage.alertIncorrectLoginVisible();
+    });
+
+    test(`Test Case 4: Register User with existing email address
+        1. Launch browser
+        2. Navigate to url 'http://automationexercise.com'
+        3. Verify that home page is visible successfully
+        4. Click on 'Signup / Login' button
+        5. Verify 'Login to your account' is visible
+        6. Enter correct email address and password
+        7. Click 'login' button
+        8. Verify that 'Logged in as username' is visible
+        9. Click 'Logout' button
+        10. Verify that user is navigated to login page`, async ({}) => {
+            await homePage.optionMenuSignUpLogin();
+            await loginPage.titleVisibleRegUser();
+            await loginPage.loginToYourAccount(
+                userData.registeredUser.email, userData.registeredUser.password
+            );
+            await loginPage.clickButtonLogin();
+            await homePage.optionMenuLogout();
+            await loginPage.titleVisibleRegUser();
+            await homePage.validateUrl('login');
+        });
 
 });
